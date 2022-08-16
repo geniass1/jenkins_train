@@ -1,11 +1,14 @@
 pipeline{
-  docker.withRegistry(‘https://registry.example.com/', ‘svc-acct’) {
-    checkout scm
-    stage(‘Build’) {
-      sh ‘docker-compose –f build-compose.yml run –rm compile’
+    agent {
+    label: 'master'
     }
-    stage(‘Test) {
-      sh ‘docker-compose –f build-compose.yml run –rm test’
+    stages {
+        stage('run docker compose')
+            {
+            steps{
+                echo "============ start building image ============"
+                sh 'docker compose run --build'
+            }
+        }
     }
-  }
 }
