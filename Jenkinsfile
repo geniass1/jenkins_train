@@ -1,4 +1,4 @@
-node {
+pipeline {
     def app
 
     stage('Clone repository') {
@@ -7,12 +7,12 @@ node {
         checkout scm
     }
 
-    stage('Build image') {
+    stage('Build image') agent{ docker{
         /* This builds the actual image; synonymous to
          * docker build on the command line */
 
         app = docker.build("geniass1/jenkins_train/Dockerfile")
-    }
+    }}
 
     stage('Test image') {
         /* Ideally, we would run a test framework against our image.
