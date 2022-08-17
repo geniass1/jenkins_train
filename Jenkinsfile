@@ -7,16 +7,6 @@ pipeline {
   agent any
   stages {
 
-  stage('Lint and Test')
-        {
-        agent { dockerfile true }
-            steps
-            {
-                sh 'black .'
-                sh 'flake8 . '
-            }
-
-        }
     stage('Building image') {
       steps{
         script {
