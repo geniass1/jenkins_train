@@ -14,7 +14,6 @@ pipeline {
             {
                 sh 'black .'
                 sh 'flake8 . '
-                sh 'pytest'
             }
 
         }
