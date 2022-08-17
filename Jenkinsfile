@@ -1,12 +1,25 @@
 pipeline {
-    agent {
-        docker { image 'node:16.13.1-alpine' }
+    agent
+    environment{
+        DOCKERHUB_CREDENTIALS=credentials('dockerhub')
     }
-    stages {
-        stage('Test') {
+    stages{
+        stage('gitclone'){
+            steps{
+                git 'https://github.com/geniass1/jenkins_train.git'
+            }
+        }
+        stage('Build'){
             steps {
-                sh 'node --version'
+                sh 'docker build -t geniass123/jenkins_train .'
+            }
+        }
+        stage('Login'){
+            steps{
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
         }
     }
+
+
 }
