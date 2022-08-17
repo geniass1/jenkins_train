@@ -4,8 +4,8 @@ imagename = "geniass123/jenkins_train"
 registryCredential = 'geniass123-docker-hub'
 dockerImage = ''
 }
-agent any
-  stages {
+
+stages {
 
   stage('Lint and Test')
         {
