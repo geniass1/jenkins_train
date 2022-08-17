@@ -1,25 +1,42 @@
 pipeline {
-    agent any
-    environment{
-        DOCKERHUB_CREDENTIALS=credentials('dockerhub')
-    }
-    stages{
-        stage('gitclone'){
-            steps{
-                git 'https://github.com/geniass1/jenkins_train.git'
-            }
-        }
-        stage('Build'){
-            steps {
-                sh 'docker build -t geniass123/jenkins_train .'
-            }
-        }
-        stage('Login'){
-            steps{
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-            }
-        }
-    }
+  environment {
+    imagename = "evgeniypython123/jenkins_train"
+    registryCredential = 'geniass123-docker-hub'
+    dockerImage = ''
+  }
+  agent any
+  stages {
 
+  stage('Lint and Test')
+        {
+        agent { dockerfile true }
+            steps
+            {
+                sh 'black .'
+                sh 'flake8 . '
+                sh 'pytest'
+            }
 
+        }
+    stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build imagename
+        }
+      }
+    }
+    stage('Deploy Image') {
+      steps{
+        script
+
+        {
+          docker.withRegistry( '', registryCredential )
+          {
+            dockerImage.push()
+             dockerImage.push('latest')
+          }
+        }
+      }
+    }
+  }
 }
