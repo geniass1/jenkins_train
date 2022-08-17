@@ -1,18 +1,13 @@
-pipeline
-{
-    environment
-    {
-        imagename = "geniass123/jenkins_train"
-        registryCredential = 'geniass123-docker-hub'
-        dockerImage = ''
-    }
+pipeline {
+  environment {
+    imagename = "evgeniypython123/evgeniy"
+    registryCredential = 'klimovichevgeniy-docker-hub'
+    dockerImage = ''
+  }
+  agent any
+  stages {
 
-agent {dockerfile true}
-
- stages
- {
-
- stage('Lint and Test')
+  stage('Lint and Test')
         {
         agent { dockerfile true }
             steps
@@ -23,23 +18,17 @@ agent {dockerfile true}
             }
 
         }
-
-    stage('Building image')
-    {
-      steps
-      {
-        script
-        {
+    stage('Building image') {
+      steps{
+        script {
           dockerImage = docker.build imagename
         }
       }
     }
-
-    stage('Deploy Image')
-    {
-      steps
-      {
+    stage('Deploy Image') {
+      steps{
         script
+
         {
           docker.withRegistry( '', registryCredential )
           {
