@@ -1,6 +1,6 @@
 pipeline {
   environment {
-    imagename = "evgeniypython123/jenkins_train"
+    imagename = "geniass123/jenkins_train"
     registryCredential = 'geniass123-docker-hub'
     dockerImage = ''
   }
