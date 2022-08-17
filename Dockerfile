@@ -1,19 +1,12 @@
-FROM python:3.9-slim
-
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
+FROM python:3.10-slim
 ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
 
-# Set work directory
+
 WORKDIR /code/
-# Install dependencies
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+COPY Pipfile Pipfile.lock ./
 
-COPY ./Pipfile ./Pipfile.lock /code/
-RUN pip install pipenv && pipenv install --system
+RUN pip install pipenv
+RUN pipenv install --system --deploy
 
-# Copy project
-
-COPY . /code/
-
+COPY backend /code/
