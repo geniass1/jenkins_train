@@ -9,12 +9,11 @@ pipeline {
 
   stage('Lint and Test')
         {
-        agent { dockerfile true }
+
             steps
             {
                 sh 'black .'
                 sh 'flake8 . '
-                sh 'pytest'
             }
 
         }
